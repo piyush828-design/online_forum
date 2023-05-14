@@ -1,0 +1,28 @@
+
+
+<%= form_with model: topic do |form| %>
+  <div>
+    <%= form.select :category, ['Health', 'Culture','Nature']%><br>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :content %><br>
+    <%= form.text_area :content %><br>
+  </div>
+
+  <div>
+    <%= form.label :user_id %><br>
+    <%= form.text_field :user_id,value: current_user.id,readonly: true %><br>
+  </div>
+
+  <div>
+    <%= form.label :topic_image %><br>
+    <%= form.file_field :topic_image %><br>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

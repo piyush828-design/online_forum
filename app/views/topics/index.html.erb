@@ -1,0 +1,11 @@
+
+<ul>
+	<% @topics.each do |i| %>
+		<b>title:</b><%=  i.title %><br>
+		<b>content:</b><%= i.content %>
+	<% end %>
+</ul>
+
+<%= link_to "New Post", new_topic_path %>
+
+

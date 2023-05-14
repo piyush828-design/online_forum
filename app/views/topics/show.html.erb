@@ -1,0 +1,27 @@
+
+<h5 class="card-title"><b style="color:red;">Post Count:</b><b style="color:red;"><%= current_user.topics.count%></b></h5>
+<% Topic.where(user_id:current_user.id)&.each do |topic| %>
+    <div class="card-group">
+      <div class="card">
+        <div class="card-body"> 
+          <%if @topic&.topic_image&.attached?%> 
+            <%= image_tag @topic&.topic_image,style: "width:250px;height:300px;" %>
+          <% end %>
+
+          <h5 class="card-title"><b>user_id:</b><%= topic.user_id%></h5>
+          <h5 class="card-title"><b>title:</b><%= topic.title%></h5>
+          <p class="card-text"><b>content:</b><%= topic.content%></p>
+          <p class="card-text"><b>updated_at</b><%= topic.updated_at%></p>
+          <p class="card-text"><b>approved:</b><%= topic.approved%></p>
+        </div>
+      </div>
+    </div>
+    <%= link_to "Edit", edit_user_topic_path(current_user.id,topic.id) %><br>
+    <%= link_to "Destroy", topic_path(topic), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %>
+<% end %>
+  <ul>
+    <li><%= link_to "Back", root_path %>
+  </ul>
