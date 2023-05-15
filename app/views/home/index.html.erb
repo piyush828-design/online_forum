@@ -1,30 +1,30 @@
 
 <!-- Automatic Slideshow Images -->
-  <div class="mySlides w3-display-container w3-center">
-  	<%= image_tag ("layout/culture.jpg"),style:"width:100%;" %>
-  </div>
+<div class="mySlides w3-display-container w3-center">
+  <%= image_tag ("layout/culture.jpg"),style:"width:100%;height:100%;" %>
+</div>
  
-  <h1> Welcome to online forum </h1>
+<h1> Welcome to online forum </h1>
  
 <% if user_signed_in? %>
-
-	<% Topic.where.not(user_id:current_user.id)&.each do |topic| %>  
+	<% Topic.where.not(user_id:current_user.id).order(updated_at: :asc)&.each do |topic| %>  
 		<div class="card-group">
   			<div class="card">
-    			<img src="/home/acer/Downloads/raimond-klavins-JqT2Wp5S0Dk-unsplash.jpg" class="card-img-top" alt="...">
     			<div class="card-body">
-    				<%if @topic&.topic_image&.attached?%> 
-            			<%= image_tag @topic&.topic_image,style: "width:250px;height:300px;" %>
+    				<%if topic&.topic_image&.attached?%> 
+            			<%= image_tag topic&.topic_image,style: "width:250px;height:300px;" %>
           			<% end %>
-      				<h5 class="card-title" ><b>user_id:</b><%= topic.user_id%></h5>
-      				<h5 class="card-title" ><b>title:</b><p style="font-size:30px;"><%= topic.title%></p></h5>
-      				<p class="card-text"><b>content:</b><p style="font-size:20px;"><%= topic.content%></p>
-      				<p class="card-text"><b>published_at:</b><%= topic.updated_at%></p>
-      				<p class="card-text"><b>approved:</b><%= topic.approved%></p>
+      				<p class="card-text"><b>Author Name:</b><%= topic.user[:name]%></p>
+      				<b>title:</b><p style="font-size:30px;"><%= topic.title%></p>
+      				<div class="row gx-5">
+    					<div class="col">
+     						<div class="p-3 border bg-light w-50"><p class="card-text"><b>content:</b><p style="font-size:20px;"><%= topic.content%></p></div>
+    					</div>
+  					</div>	
+      				<p class="card-text"><b>Published_at:</b><%= topic.updated_at%></p>
       			</div>
+				
     		</div>
   		</div>
 	<% end %>
 <%end%>
-<h2>Add a comment:</h2>
-
