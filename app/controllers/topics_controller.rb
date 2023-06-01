@@ -1,12 +1,12 @@
 class TopicsController < ApplicationController
-require 'byebug'
+	#load_and_authorize_resource
 
 	def index
-		@topics = Topic.all
-	end
-
-	def show
 		@topic = Topic.find_by(id: params[:id])
+		if current_user.topics.count == 0
+			flash.now[:notice] = "You have not created any post! Create one"
+			render 'new'
+		end
 	end
 
 	def new
@@ -14,38 +14,49 @@ require 'byebug'
 	end
 
 	def create
-		@topic = Topic.new(topic_params)
+		@topic = current_user.topics.build(topic_params)
 		@topic.approved = false
 		if @topic.save
 			redirect_to @topic
 		else
+			flash.now[:error] = ('one of the field is missing')
 			render :new, status: :unprocessable_entity
 		end
 	end
 
-	def edit
-		@topic = Topic.find(params[:id])
+	def show
+		@topic = Topic.new
 	end
+	# def show
+	# 	@topic = current_user.topics.find(params[:id])
+	# end
+
+	def edit
+    @topic = Topic.find_by(id: params[:id])
+  end
 
 	def update
-		@topic = Topic.find(params[:id])
+		@topic = Topic.find_by(id: params[:id])
+
 		if @topic.update(topic_params)
 			redirect_to @topic
 		else
-			render :edit, status: :unprocessable_entity
+			flash.now[:error] = ('one of the field is missing')
+			render 'edit'
 		end
 	end
 
 	def destroy
-    @topic = Topic.find(params[:id])
-    @topic.destroy
-    redirect_to root_path, status: :see_other
-  end
+  	@topic = Topic.find(params[:id])
+  	@topic.destroy
+  	redirect_to root_path, status: :see_other
+	end
 
 	private
-
+	
 	def topic_params
-		params.require(:topic).permit(:category,:title,:content,:user_id,:topic_image)
+		params.require(:topic).permit(:category_id,:title,:content,:topic_image).merge(user_id: current_user.id)
 	end
 end
   
+ 

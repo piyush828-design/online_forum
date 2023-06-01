@@ -1,0 +1,23 @@
+&nbsp;
+<%= form_with url: "/users/:name", method: :get do |form| %>
+  <%= form.label :name, "Enter name:" %>
+  <%= form.text_field :name %>
+  <%= form.submit "Search" %>
+<% end %>
+
+<h1>Friend suggestion</h1>
+<ul>
+  <% @users.where.not(id: current_user.id).each do |user| %>
+    <li>
+      <%= user.name %><br>
+      <% if current_user.friend_sender.exists?(receiver_id: user.id) %>
+        <a>already sent</a>
+      <% elsif user.friend_sender.where(receiver_id: current_user.id,sender_id:user.id).exists? %>
+				<a>already added</a>
+      <% else %>
+        <%= link_to "Add friend", new_user_friendship_path(user_id: user.id), method: :post %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+

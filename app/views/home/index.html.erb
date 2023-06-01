@@ -5,26 +5,54 @@
 </div>
  
 <h1> Welcome to online forum </h1>
- 
+<h1><%= t(:hello) %></h1>
 <% if user_signed_in? %>
-	<% Topic.where.not(user_id:current_user.id).order(updated_at: :asc)&.each do |topic| %>  
-		<div class="card-group">
+	<% Topic.where(approved:true).order(updated_at: :asc)&.each do |topic| %>  
+		<div class="card bg-dark text-white">
   			<div class="card">
     			<div class="card-body">
     				<%if topic&.topic_image&.attached?%> 
-            			<%= image_tag topic&.topic_image,style: "width:250px;height:300px;" %>
-          			<% end %>
-      				<p class="card-text"><b>Author Name:</b><%= topic.user[:name]%></p>
-      				<b>title:</b><p style="font-size:30px;"><%= topic.title%></p>
+            		<%= image_tag topic&.topic_image,style: "width:250px;height:300px;" %>
+          		<% end %>
+     				<div class="p-3 border bg-light w-50">
+      				<p style="font-size:25px;"><%= topic.title%></p>
       				<div class="row gx-5">
     					<div class="col">
-     						<div class="p-3 border bg-light w-50"><p class="card-text"><b>content:</b><p style="font-size:20px;"><%= topic.content%></p></div>
+    						<blockquote class="blockquote mb-0">
+      						<b>content:</b><p><%= topic.content%></p>
+      						<footer class="blockquote-footer">written by<cite title="Source Title"> <%=topic.user[:name]%></cite> <p class="m-1">Posted on: <cite title="Source Title"><%= "#{time_ago_in_words(topic.created_at)} ago" %></cite></p></footer>
+    						</blockquote>
     					</div>
   					</div>	
-      				<p class="card-text"><b>Published_at:</b><%= topic.updated_at%></p>
-      			</div>
-				
-    		</div>
-  		</div>
+      		</div>
+      		<%= topic.likes.count %>	
+      		<%= link_to "Like", new_like_url(current_user: current_user,topic: topic), method: :post %>
+     		</div>
+					<h2>Comments</h2>
+					<% topic.comments.each do |comment| %>
+					  <p>
+					    <strong>Comment by <%=comment.user.name%>:</strong>
+					    <%= comment.content %>
+					  </p>
+					<% end %>
+					<div class="card my-1">
+					  <div class="card-body">
+					    <%= form_with(model: [topic, topic.comments.build]) do |f| %>
+					      <div class="form-group">
+					        <%= f.label 'New comment' %>
+					        <%= f.text_area :content, class: 'form-control' %>
+					      </div>
+					      <%= f.submit 'Submit', class: 'btn btn-primary' %>
+					    <% end %>
+					  </div>
+					</div>
+  			</div>
+    </div>
 	<% end %>
 <%end%>
+
+	
+
+
+
+

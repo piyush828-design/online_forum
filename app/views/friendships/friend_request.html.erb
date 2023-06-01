@@ -1,0 +1,9 @@
+<h1> Friend Request </h1>
+	<ul>	
+		<% @friendship.each do |user| %>
+			<li>
+				<%= user.sender[:name] %>	
+				<%= link_to "accept request", edit_user_friendship_path(current_user.id,user_id:user.sender_id) %>
+			</li>
+		<% end %>
+	</ul>

@@ -1,0 +1,21 @@
+
+<h1> Friend Request </h1>
+	<ul>	
+		<% @friendship.each do |user| %>
+			<li>
+				<%= user.sender[:name] %>	
+				<%= link_to "accept request", edit_user_friendship_path(current_user.id,user_id:user.sender_id) %>
+			</li>
+		<% end %>
+	</ul>
+
+<h1> Your friends </h1>
+
+<ul>
+	<% Friendship.where(receiver_id: current_user.id,status: true).each do |friend| %>
+		<li>
+			<%= friend.sender[:name] %>
+		</li>
+		<%= link_to "remove friend",delete_friendship_path(current_user.id,friend_id:friend.id)%>
+	<% end %>
+</ul>

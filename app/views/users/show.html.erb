@@ -1,0 +1,21 @@
+<ul>
+	
+<% if @user.present? %>
+	<% @user.each do |user| %>
+	<li>
+		<b>Name:</b> <%= user.name%>
+		<% if current_user.friend_sender.exists?(receiver_id: user.id) %>
+        <a>already sent</a>
+      <% elsif user.friend_sender.where(receiver_id: current_user.id,sender_id:user.id).exists? %>
+				<a>already added</a>
+      <% else %>
+        <%= link_to "Add friend", new_user_friendship_path(user_id: user.id), method: :post %>
+      <% end %>
+	</li>
+	<% end %>
+</ul>
+<% else %>
+	<h1>user not found</h1>
+<% end %>
+
+

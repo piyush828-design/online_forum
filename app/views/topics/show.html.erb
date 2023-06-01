@@ -1,5 +1,6 @@
+<h1> You have not created any post </h1>
 
-<h5 class="card-title"><b style="color:red;">Post Count:</b><b style="color:red;"><%= current_user.topics.count%></b></h5>
+<button type="button" class="btn btn-info"><%= link_to "Create new post", new_user_topic_path(current_user.id) %><br></button>
 <% Topic.where(user_id:current_user.id)&.each do |topic| %>
     <div class="card-group">
       <div class="card">
@@ -7,15 +8,14 @@
           <%if topic.topic_image.attached?%> 
             <%= image_tag topic&.topic_image,style: "width:250px;height:300px;" %>
           <% end %>
-          <h5 class="card-title"><b>Your_name:</b><%= topic.user[:name]%></h5>
-          <h5 class="card-title"><b>Your_id:</b><%= current_user.id%></h5>
+          <h5 class="card-title"><b>Your_name:</b> <%= topic.user[:name]%></h5>
           <h5 class="card-title"><b>title:</b><%= topic.title%></h5>
           <div class="row gx-5">
               <div class="col">
                 <div class="p-3 border bg-light w-50"><p class="card-text"><b>content:</b><p style="font-size:20px;"><%= topic.content%></p></div>
               </div>
-            </div>
-          <p class="card-text"><b>updated_at:</b><%= topic.updated_at%></p>
+          </div>
+          <p class="card-text"><b>Poste On:</b><%= topic.updated_at%></p>
           <p class="card-text"><b>approved:</b><%= topic.approved%></p>
         </div>
       </div>
@@ -27,6 +27,5 @@
                     turbo_confirm: "Are you sure?"
                   } %></button>
 <% end %><br>
-<button type="button" class="btn btn-warning">
-<%= link_to "Back", root_path %>
-</button>
+<button type="button" class="btn btn-warning"><%= link_to "Back", root_path %></button>
+

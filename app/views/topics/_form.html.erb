@@ -1,13 +1,17 @@
+
 <section class="vh-100" style="background-color: #508bfc;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
         <div class="card shadow-2-strong" style="border-radius: 1rem;">
           <div class="card-body p-5 text-center">
-            <h1>Edit Post</h1>
+            <h1>Create New Post</h1>
             <%= form_with model: topic do |form| %>
               <div>
-                <%= form.select :category, ['Health', 'Culture','Nature']%><br>
+                <%= form.label :category_id %>
+                <%= form.collection_select :category_id, Category.all, :id, :name, prompt: true %>
+              </div>
+              <div>
                 <%= form.label :title %><br>
                 <%= form.text_field :title %>
               </div>
@@ -18,15 +22,10 @@
               </div>
 
               <div>
-                <%= form.label :user_id %><br>
-                <%= form.text_field :user_id,value: current_user.id,readonly: true %><br>
-              </div>
-
-              <div>
                 <%= form.label :topic_image %><br>
                 <%= form.file_field :topic_image %><br>
               </div>
-
+              
               <div>
                 <%= form.submit %>
               </div>
